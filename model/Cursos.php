@@ -15,7 +15,7 @@ class Cursos
         $this->conn = $db;
     }
 
-    // Get Posts
+    // Devolver Cursos
     public function findAll() {
         // Create query
         $query = 'SELECT c.name as category_name, p.id, p.category_id, p.title, p.body, p.author, p.created_at
@@ -34,7 +34,7 @@ class Cursos
         return $stmt;
     }
 
-    // Get Single Post
+    // Devolver Curso
     public function findOne() {
         // Creación de la consulta
         // Devolución de la primera coincidencia en la tabla
@@ -44,52 +44,49 @@ class Cursos
                                       id = :id
                                       LIMIT 0,1';
 
-        // Prepare tatement
+        // Prepare Statement
         $stmt = $this->conn->prepare($query);
 
-        // Bind ID
-        $stmt->bindParam(1, $this->id);
+        // Asignación de valores
+        $stmt->bindParam(':id', $this->id);
 
         // Execute query
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Set properties
-        $this->title = $row['title'];
-        $this->body = $row['body'];
-        $this->author = $row['author'];
-        $this->category_id = $row['category_id'];
-        $this->category_name = $row['category_name'];
+        // Seteo de las propiedades
+        $this->title = $row['nombre'];
     }
 
-    // Create Post
+    // Insertar Curso
     public function insert() {
-        // Create query
+        // Creación de la consulta
         $query = 'INSERT INTO ' . __CLASS__ . ' SET nombre = :nombre';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
 
-        // Clean data
+        // strip_tags -> Eliminamos etiquetas introducidas
+        // htmlspecialchars -> Escapamos los caracteres especiales
         $this->nombre = htmlspecialchars(strip_tags($this->nombre));
 
-        // Bind data
-        $stmt->bindParam(':title', $this->title);
+        // Asignación de valores
+        $stmt->bindParam(':nombre', $this->nombre);
 
 
-        // Execute query
+        // Ejecución de la query
         if($stmt->execute()) {
             return true;
         }
 
-        // Print error if something goes wrong
-        printf("Error: %s.\n", $stmt->error);
+        // En el caso de Error devolvemos el código de error y false
+        printf("ERROR: %s.\n", $stmt->error);
 
         return false;
     }
 
-    // Update Post
+    // Actualizar Curso
     public function update() {
         // Generación de la query
         $query = 'UPDATE ' . __CLASS__ . '
@@ -112,7 +109,7 @@ class Cursos
             return true;
         }
 
-        // En el caso de Error devolvemos el código de error y falses
+        // En el caso de Error devolvemos el código de error y false
         printf("ERROR: %s.\n", $stmt->error);
 
         return false;
@@ -138,7 +135,7 @@ class Cursos
             return true;
         }
 
-        // En el caso de Error devolvemos el código de error y falses
+        // En el caso de Error devolvemos el código de error y false
         printf("ERROR: %s.\n", $stmt->error);
 
         return false;
