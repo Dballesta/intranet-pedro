@@ -28,7 +28,6 @@ class Jwt
         $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($payload));
 
         // Create Signature Hash
-        echo JWTPASSWORD;
         $signature = hash_hmac(ALGORITHM, $base64UrlHeader . "." . $base64UrlPayload, JWTPASSWORD, true);
 
         // Encode Signature to Base64Url String

@@ -20,17 +20,12 @@ $db = $database->getConnection();
 // Instanciacion de los cursos
 $usuario = new Usuarios($db);
 
-foreach ($_POST as $key => $value) {
-    echo "Key: $key; Value: $value\n";
-}
 $usuario->dni = isset($_POST['dni']) ? $_POST['dni'] : die();
 
 $usuario->password = base64_encode(isset($_POST['password']) ? $_POST['password'] : die());
 
-echo $usuario->password;
-
 $stmt = $usuario->login();
-echo $stmt->rowCount();
+
 if($stmt->rowCount() > 0){
     // get retrieved row
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
