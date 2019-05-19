@@ -3,25 +3,29 @@
 
 class Cursos
 {
+
+    // Propiedades de la clase
+    public $nombre;
+    public $id;
+
     // Propiedad para la conexión a la BBDD
     private $conn;
 
-    // Propiedades de la clase
-    public $id;
-    public $nombre;
-
     // Contructor generando la connexión a la BBDD
-    public function __construct($db) {
+
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // Devolver Cursos
-    public function findAll() {
+    public function findAll()
+    {
         // Create query
         $query = 'SELECT id, nombre
                                 FROM ' . strtolower(__CLASS__) . '
                                 ORDER BY
-                                  p.created_at DESC';
+                                  id ASC';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -33,7 +37,8 @@ class Cursos
     }
 
     // Devolver Curso
-    public function findOne() {
+    public function findOne()
+    {
         // Creación de la consulta
         // Devolución de la primera coincidencia en la tabla
         $query = "SELECT nombre 
@@ -58,10 +63,13 @@ class Cursos
     }
 
     // Insertar Curso
-    public function insert() {
+    public function insert()
+    {
         // Creación de la consulta
         $query = 'INSERT INTO ' . strtolower(__CLASS__) .
-                                                            'SET nombre = :nombre';
+                                                    '(nombre) 
+                                                    VALUES 
+                                                        (nombre = :nombre)';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -75,7 +83,7 @@ class Cursos
 
 
         // Ejecución de la query
-        if($stmt->execute()) {
+        if ($stmt->execute()) {
             return true;
         }
 
@@ -86,7 +94,8 @@ class Cursos
     }
 
     // Actualizar Curso
-    public function update() {
+    public function update()
+    {
         // Generación de la query
         $query = 'UPDATE ' . strtolower(__CLASS__) . '
                                             SET nombre = :nombre 
@@ -104,7 +113,7 @@ class Cursos
         $stmt->bindParam(':id', $this->id);
 
         // Ejecución de la query
-        if($stmt->execute()) {
+        if ($stmt->execute()) {
             return true;
         }
 
@@ -115,7 +124,8 @@ class Cursos
     }
 
     // Borrar Curso
-    public function delete() {
+    public function delete()
+    {
         // Generación de la query
         $query = 'DELETE FROM ' . strtolower(__CLASS__) . ' WHERE id = :id';
 
@@ -130,7 +140,7 @@ class Cursos
         $stmt->bindParam(':id', $this->id);
 
         // Ejecución de la query
-        if($stmt->execute()) {
+        if ($stmt->execute()) {
             return true;
         }
 
