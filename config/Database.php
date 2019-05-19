@@ -1,4 +1,6 @@
 <?php
+include 'settings.php';
+
 class Database{
 
     public $conn;
@@ -10,6 +12,7 @@ class Database{
 
         try{
             $this->conn = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, USERNAME, PASSWORD);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->exec("set names utf8");
         }catch(PDOException $exception){
             echo "ERROR: Fallo en la connexión a la base de datos: " . $exception->getMessage();

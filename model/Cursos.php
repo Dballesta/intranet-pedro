@@ -18,10 +18,8 @@ class Cursos
     // Devolver Cursos
     public function findAll() {
         // Create query
-        $query = 'SELECT c.name as category_name, p.id, p.category_id, p.title, p.body, p.author, p.created_at
-                                FROM ' . $this->table . ' p
-                                LEFT JOIN
-                                  categories c ON p.category_id = c.id
+        $query = 'SELECT id, nombre
+                                FROM ' . strtolower(__CLASS__) . '
                                 ORDER BY
                                   p.created_at DESC';
 
@@ -38,17 +36,17 @@ class Cursos
     public function findOne() {
         // Creación de la consulta
         // Devolución de la primera coincidencia en la tabla
-        $query = 'SELECT nombre 
-                                FROM ' . __CLASS__ . '
+        $query = "SELECT nombre 
+                                FROM " . strtolower(__CLASS__) . "
                                 WHERE
                                       id = :id
-                                      LIMIT 0,1';
+                                      LIMIT 0,1";
 
         // Prepare Statement
         $stmt = $this->conn->prepare($query);
 
         // Asignación de valores
-        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
 
         // Execute query
         $stmt->execute();
@@ -56,13 +54,14 @@ class Cursos
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Seteo de las propiedades
-        $this->title = $row['nombre'];
+        $this->nombre = $row['nombre'];
     }
 
     // Insertar Curso
     public function insert() {
         // Creación de la consulta
-        $query = 'INSERT INTO ' . __CLASS__ . ' SET nombre = :nombre';
+        $query = 'INSERT INTO ' . strtolower(__CLASS__) .
+                                                            'SET nombre = :nombre';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -89,7 +88,7 @@ class Cursos
     // Actualizar Curso
     public function update() {
         // Generación de la query
-        $query = 'UPDATE ' . __CLASS__ . '
+        $query = 'UPDATE ' . strtolower(__CLASS__) . '
                                             SET nombre = :nombre 
                                             WHERE id = :id';
 
@@ -118,7 +117,7 @@ class Cursos
     // Borrar Curso
     public function delete() {
         // Generación de la query
-        $query = 'DELETE FROM ' . __CLASS__ . ' WHERE id = :id';
+        $query = 'DELETE FROM ' . strtolower(__CLASS__) . ' WHERE id = :id';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
