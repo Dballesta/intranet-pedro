@@ -2,9 +2,9 @@
 Repositorio para el proyecto Intranet.  
 Proyecto CFGS DAW
 
-##Clases principales/comentadas
+## Clases principales/comentadas
 
-###Config
+### Config  
 ***/config/settings.php*** Opciones de configuración del la base de datos. Comentar una serie de variables u otra dependiendo donde funcione el servidor.  
 ***/config/Database.php*** Conexión a la base de datos.
 ###Modelo
