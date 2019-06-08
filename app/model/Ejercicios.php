@@ -1,16 +1,17 @@
 <?php
 
 
-class News
+class Ejercicios
 {
 
     public $id;
-    public $dni;
-    public $fecha;
+    public $idTema;
     public $titulo;
     public $texto;
+    public $tipo;
     public $archivo;
-    public $imagen;
+    public $fechaIni;
+    public $fechaFin;
 
     private $conn;
 
@@ -22,7 +23,7 @@ class News
 
     public function findAll()
     {
-        $query = 'SELECT id, dni, titulo, fecha, imagen
+        $query = 'SELECT id, idTEma, titulo, texto, tipo, archivo, fechaIni, fecha
                                 FROM ' . strtolower(__CLASS__) . '
                                 ORDER BY
                                 fecha  ASC';

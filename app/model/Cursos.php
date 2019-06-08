@@ -5,13 +5,13 @@ class Cursos
 {
 
     // Propiedades de la clase
-    public $nombre;
     public $id;
+    public $nombre;
 
     // Propiedad para la conexión a la BBDD
     private $conn;
 
-    // Contructor generando la connexión a la BBDD
+    // Contructor generando la conexión a la BBDD
 
     public function __construct($db)
     {
@@ -25,7 +25,7 @@ class Cursos
         $query = 'SELECT id, nombre
                                 FROM ' . strtolower(__CLASS__) . '
                                 ORDER BY
-                                  id ASC';
+                                nombre ASC';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -69,7 +69,7 @@ class Cursos
         $query = 'INSERT INTO ' . strtolower(__CLASS__) .
                                                     '(nombre) 
                                                     VALUES 
-                                                        (nombre = :nombre)';
+                                                        (:nombre)';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);

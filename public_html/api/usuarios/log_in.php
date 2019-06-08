@@ -27,7 +27,6 @@ $usuario->password = base64_encode(isset($_POST['password']) ? $_POST['password'
 $stmt = $usuario->login();
 
 if($stmt->rowCount() > 0){
-    // get retrieved row
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $usuario->nombre = $row['nombre'];

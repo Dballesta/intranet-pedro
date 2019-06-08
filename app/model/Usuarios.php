@@ -32,7 +32,7 @@ class Usuarios
 
     public function findOne()
     {
-        $query = "SELECT nombre 
+        $query = "SELECT nombre, apellidos, privilegios
                                 FROM " . strtolower(__CLASS__) . "
                                 WHERE
                                       dni = :dni
@@ -47,6 +47,8 @@ class Usuarios
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->nombre = $row['nombre'];
+        $this->apellidos = $row['apellidos'];
+        $this->privilegios = $row['privilegios'];
     }
 
     public function exists()
@@ -76,8 +78,8 @@ class Usuarios
         $query = 'SELECT dni, nombre, apellidos, privilegios
                 FROM
                     ' . strtolower(__CLASS__) . '
-                WHERE
-                    dni= :dni and password = :password';
+                    WHERE 
+                    dni = :dni and password = :password';
 
         $stmt = $this->conn->prepare($query);
 
