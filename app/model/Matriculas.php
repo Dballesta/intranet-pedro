@@ -1,16 +1,13 @@
 <?php
 
 
-class News
+class Matriculas
 {
 
     public $id;
+    public $idAsignatura;
     public $dni;
-    public $fecha;
-    public $titulo;
-    public $texto;
-    public $archivo;
-    public $imagen;
+    public $estado;
 
     private $conn;
 
@@ -22,10 +19,10 @@ class News
 
     public function findAll()
     {
-        $query = 'SELECT id, dni, titulo, fecha, imagen
+        $query = 'SELECT id, idAsignatura, dni, estado
                                 FROM ' . strtolower(__CLASS__) . '
                                 ORDER BY
-                                fecha  ASC';
+                                dni  ASC';
 
         $stmt = $this->conn->prepare($query);
 
@@ -34,35 +31,34 @@ class News
         return $stmt;
     }
 
-    public function getLasts($limit)
+    public function findByDni()
     {
-        $query = 'SELECT id, dni, titulo, fecha, imagen
+        $query = 'SELECT id, idAsignatura, dni, estado
                                 FROM ' . strtolower(__CLASS__) . '
+                                WHERE 
+                                    estado > 1
+                                    dni = :dni
                                 ORDER BY
-                                fecha  ASC
-                                LIMIT 0,:limit';
+                                dni  ASC';
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(':limit', $this->id, PDO::PARAM_INT);
+        $stmt->bindParam(':dni', $this->dni);
 
         $stmt->execute();
 
         return $stmt;
     }
 
-    public function getLastsWithOffset($offset, $limit)
+    public function findAllActive()
     {
-        $query = 'SELECT id, dni, titulo, fecha, imagen
+        $query = 'SELECT id, idAsignatura, dni, estado
                                 FROM ' . strtolower(__CLASS__) . '
+                                WHERE estado > 1
                                 ORDER BY
-                                fecha  ASC
-                                LIMIT :offset,:limit';
+                                dni  ASC';
 
         $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':offset', $this->id, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $this->id, PDO::PARAM_INT);
 
         $stmt->execute();
 
@@ -71,7 +67,7 @@ class News
 
     public function findOne()
     {
-        $query = "SELECT id, dni, titulo, fecha, texto, archivo, imagen
+        $query = "SELECT id, idAsignatura, dni, estado
                                 FROM " . strtolower(__CLASS__) . "
                                 WHERE
                                       id = :id
@@ -85,25 +81,20 @@ class News
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $this->dni = $row['dni'];
-        $this->titulo = $row['titulo'];
-        $this->fecha = $row['fecha'];
-        $this->texto = $row['texto'];
-        $this->archivo = $row['archivo'];
-        $this->archivo = $row['imagen'];
+        $this->dni = $row['id'];
+        $this->titulo = $row['idAsignatura'];
+        $this->fecha = $row['dni'];
+        $this->texto = $row['estado'];
     }
 
     public function insert()
     {
         $query = 'INSERT INTO ' . strtolower(__CLASS__) .
-            '(dni, titulo, fecha, texto, archivo, imagen) 
+            '(idAsignatura, dni, estado) 
                                                     VALUES 
-                                                        (:dni, 
-                                                        :titulo, 
-                                                        :fecha, 
-                                                        :texto, 
-                                                        :archivo, 
-                                                        :imagen)';
+                                                        (:idAsignatura, 
+                                                        :dni, 
+                                                        :estado)';
 
         $stmt = $this->conn->prepare($query);
 

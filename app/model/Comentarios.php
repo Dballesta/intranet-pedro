@@ -58,10 +58,9 @@ class Comentarios
     public function insert()
     {
         $query = 'INSERT INTO ' . strtolower(__CLASS__) .
-            '(id, fecha, idTema, dni, texto) 
+            '(fecha, idTema, dni, texto) 
                                                     VALUES 
                                                         (
-                                                        :id, 
                                                         :fecha, 
                                                         :idTema, 
                                                         :dni, 
@@ -70,7 +69,6 @@ class Comentarios
 
         $stmt = $this->conn->prepare($query);
 
-        $this->id = htmlspecialchars(strip_tags($this->id));
         $this->fecha = htmlspecialchars(strip_tags($this->fecha));
         $this->idTema = htmlspecialchars(strip_tags($this->idTema));
         $this->dni = htmlspecialchars(strip_tags($this->dni));

@@ -79,25 +79,24 @@ class Asignaturas
     public function insert()
     {
         $query = 'INSERT INTO ' . strtolower(__CLASS__) .
-            '(id, idCurso, nombre, dniProfesor, texto, archivo) 
+            '(idCurso, nombre, dniProfesor, texto, archivo) 
                                                     VALUES 
-                                                        (:id, 
+                                                        (
                                                         :idCurso, 
                                                         :nombre, 
                                                         :dniProfesor, 
                                                         :texto, 
-                                                        :archivo)';
+                                                        :archivo
+                                                        )';
 
         $stmt = $this->conn->prepare($query);
 
-        $this->dni = htmlspecialchars(strip_tags($this->id));
         $this->titulo = htmlspecialchars(strip_tags($this->idCurso));
         $this->fecha = htmlspecialchars(strip_tags($this->nombre));
         $this->fecha = htmlspecialchars(strip_tags($this->dniProfesor));
         $this->texto = htmlspecialchars(StringUtils::strip_html_script($this->texto));
         $this->archivo = htmlspecialchars(strip_tags($this->archivo));
 
-        $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':idCurso', $this->idCurso);
         $stmt->bindParam(':nombre', $this->nombre);
         $stmt->bindParam(':dniProfesor', $this->dniProfesor);

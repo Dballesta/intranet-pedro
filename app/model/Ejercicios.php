@@ -83,9 +83,9 @@ class Ejercicios
     public function insert()
     {
         $query = 'INSERT INTO ' . strtolower(__CLASS__) .
-            '(id, idTema, titulo, texto, tipo, archivo, fechaIni, fechaFin) 
+            '(idTema, titulo, texto, tipo, archivo, fechaIni, fechaFin) 
                                                     VALUES 
-                                                        (:id, 
+                                                        (
                                                         :idTema, 
                                                         :titulo, 
                                                         :texto, 
@@ -97,7 +97,6 @@ class Ejercicios
 
         $stmt = $this->conn->prepare($query);
 
-        $this->id = htmlspecialchars(strip_tags($this->id));
         $this->idTema = htmlspecialchars(strip_tags($this->idTema));
         $this->titulo = htmlspecialchars(strip_tags($this->titulo));
         $this->texto = htmlspecialchars(StringUtils::strip_html_script($this->texto));
@@ -107,7 +106,6 @@ class Ejercicios
         $this->fechaFin = htmlspecialchars(strip_tags($this->fechaFin));
 
 
-        $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':idTema', $this->idTema);
         $stmt->bindParam(':titulo', $this->titulo);
         $stmt->bindParam(':texto', $this->texto);
