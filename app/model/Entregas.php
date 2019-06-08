@@ -1,16 +1,16 @@
 <?php
 
 
-class News
+class Entregas
 {
 
     public $id;
     public $dni;
+    public $idEjercicio;
     public $fecha;
-    public $titulo;
-    public $texto;
+    public $nota;
+    public $comentarioProf;
     public $archivo;
-    public $imagen;
 
     private $conn;
 
@@ -22,7 +22,7 @@ class News
 
     public function findAll()
     {
-        $query = 'SELECT id, dni, titulo, fecha, imagen
+        $query = 'SELECT id, dni, idEjercicio, fecha, nota, comentarioProf, archivo
                                 FROM ' . strtolower(__CLASS__) . '
                                 ORDER BY
                                 fecha  ASC';
@@ -34,44 +34,9 @@ class News
         return $stmt;
     }
 
-    public function getLasts($limit)
-    {
-        $query = 'SELECT id, dni, titulo, fecha, imagen
-                                FROM ' . strtolower(__CLASS__) . '
-                                ORDER BY
-                                fecha  ASC
-                                LIMIT 0,:limit';
-
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':limit', $this->id, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        return $stmt;
-    }
-
-    public function getLastsWithOffset($offset, $limit)
-    {
-        $query = 'SELECT id, dni, titulo, fecha, imagen
-                                FROM ' . strtolower(__CLASS__) . '
-                                ORDER BY
-                                fecha  ASC
-                                LIMIT :offset,:limit';
-
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':offset', $this->id, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $this->id, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        return $stmt;
-    }
-
     public function findOne()
     {
-        $query = "SELECT id, dni, titulo, fecha, texto, archivo, imagen
+        $query = "SELECT id, dni, idEjercicio, fecha, nota, comentarioProf, archivo
                                 FROM " . strtolower(__CLASS__) . "
                                 WHERE
                                       id = :id
@@ -86,11 +51,11 @@ class News
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         $this->dni = $row['dni'];
-        $this->titulo = $row['titulo'];
-        $this->fecha = $row['fecha'];
-        $this->texto = $row['texto'];
+        $this->titulo = $row['idEjercicio'];
+        $this->titulo = $row['fecha'];
+        $this->fecha = $row['nota'];
+        $this->texto = $row['comentarioProf'];
         $this->archivo = $row['archivo'];
-        $this->archivo = $row['imagen'];
     }
 
     public function insert()
@@ -99,28 +64,22 @@ class News
             '(dni, titulo, fecha, texto, archivo, imagen) 
                                                     VALUES 
                                                         (:dni, 
-                                                        :titulo, 
+                                                        :idEjercicio, 
                                                         :fecha, 
-                                                        :texto, 
-                                                        :archivo, 
-                                                        :imagen)';
+                                                        :nota, 
+                                                        :comentarioProf, 
+                                                        :archivo)';
 
         $stmt = $this->conn->prepare($query);
 
-        $this->dni = htmlspecialchars(strip_tags($this->dni));
-        $this->titulo = htmlspecialchars(strip_tags($this->titulo));
-        $this->fecha = htmlspecialchars(strip_tags($this->fecha));
-        $this->texto = htmlspecialchars(StringUtils::strip_html_script($this->texto));
-        $this->archivo = htmlspecialchars(strip_tags($this->archivo));
-        $this->imagen = htmlspecialchars(strip_tags($this->imagen));
+        $this->dni = $row['dni'];
+        $this->titulo = $row['idEjercicio'];
+        $this->titulo = $row['fecha'];
+        $this->fecha = $row['nota'];
+        $this->texto = $row['comentarioProf'];
+        $this->archivo = $row['archivo'];
 
 
-        $stmt->bindParam(':dni', $this->dni);
-        $stmt->bindParam(':titulo', $this->titulo);
-        $stmt->bindParam(':fecha', $this->fecha);
-        $stmt->bindParam(':texto', $this->texto);
-        $stmt->bindParam(':archivo', $this->archivo);
-        $stmt->bindParam(':imagen', $this->imagen);
 
         if ($stmt->execute()) {
             return true;
@@ -136,29 +95,29 @@ class News
         $query = 'UPDATE ' . strtolower(__CLASS__) . '
                                             SET 
                                                 dni = :dni, 
-                                                titulo = :titulo, 
+                                                idEjercicio = :idEjercicio, 
                                                 fecha = :fecha, 
-                                                texto = :texto, 
+                                                nota = :nota, 
+                                                comentarioProf = :comentarioProf, 
                                                 archivo = :archivo, 
-                                                imagen = :imagen
                                             WHERE id = :id';
 
         $stmt = $this->conn->prepare($query);
 
         $this->dni = htmlspecialchars(strip_tags($this->dni));
-        $this->titulo = htmlspecialchars(strip_tags($this->titulo));
+        $this->idEjercicio = htmlspecialchars(strip_tags($this->idEjercicio));
         $this->fecha = htmlspecialchars(strip_tags($this->fecha));
-        $this->texto = htmlspecialchars(StringUtils::strip_html_script($this->texto));
+        $this->nota = htmlspecialchars(strip_tags($this->nota));
+        $this->comentarioProf = htmlspecialchars(StringUtils::strip_html_script($this->comentarioProf));
         $this->archivo = htmlspecialchars(strip_tags($this->archivo));
-        $this->imagen = htmlspecialchars(strip_tags($this->imagen));
 
-
+        $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':dni', $this->dni);
-        $stmt->bindParam(':titulo', $this->titulo);
+        $stmt->bindParam(':idEjercicio', $this->idEjercicio);
         $stmt->bindParam(':fecha', $this->fecha);
-        $stmt->bindParam(':texto', $this->texto);
+        $stmt->bindParam(':nota', $this->nota);
+        $stmt->bindParam(':comentarioProf', $this->comentarioProf);
         $stmt->bindParam(':archivo', $this->archivo);
-        $stmt->bindParam(':imagen', $this->imagen);
 
         if ($stmt->execute()) {
             return true;
