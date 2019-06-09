@@ -146,4 +146,28 @@ class Entregas
 
         return false;
     }
+
+    public function exists()
+    {
+        $query = "SELECT id 
+                                FROM " . strtolower(__CLASS__) . "
+                                WHERE
+                                      dni = :dni
+                                      AND
+                                      idEjercicio = :idEjercicio
+                                      LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':dni', $this->dni);
+        $stmt->bindParam(':idEjercicio', $this->idEjercicio);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+
+        return false;
+    }
 }

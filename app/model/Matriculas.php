@@ -92,26 +92,22 @@ class Matriculas
         $query = 'INSERT INTO ' . strtolower(__CLASS__) .
             '(idAsignatura, dni, estado) 
                                                     VALUES 
-                                                        (:idAsignatura, 
+                                                        (
+                                                        :idAsignatura, 
                                                         :dni, 
-                                                        :estado)';
+                                                        :estado
+                                                        )';
 
         $stmt = $this->conn->prepare($query);
 
+        $this->idAsignatura = htmlspecialchars(strip_tags($this->idAsignatura));
         $this->dni = htmlspecialchars(strip_tags($this->dni));
-        $this->titulo = htmlspecialchars(strip_tags($this->titulo));
-        $this->fecha = htmlspecialchars(strip_tags($this->fecha));
-        $this->texto = htmlspecialchars(StringUtils::strip_html_script($this->texto));
-        $this->archivo = htmlspecialchars(strip_tags($this->archivo));
-        $this->imagen = htmlspecialchars(strip_tags($this->imagen));
+        $this->estado = htmlspecialchars(strip_tags($this->estado));
 
 
+        $stmt->bindParam(':idAsignatura', $this->idAsignatura);
         $stmt->bindParam(':dni', $this->dni);
-        $stmt->bindParam(':titulo', $this->titulo);
-        $stmt->bindParam(':fecha', $this->fecha);
-        $stmt->bindParam(':texto', $this->texto);
-        $stmt->bindParam(':archivo', $this->archivo);
-        $stmt->bindParam(':imagen', $this->imagen);
+        $stmt->bindParam(':estado', $this->estado);
 
         if ($stmt->execute()) {
             return true;
@@ -126,30 +122,23 @@ class Matriculas
     {
         $query = 'UPDATE ' . strtolower(__CLASS__) . '
                                             SET 
+                                                idAsignatura = :idAsignatura, 
                                                 dni = :dni, 
-                                                titulo = :titulo, 
-                                                fecha = :fecha, 
-                                                texto = :texto, 
-                                                archivo = :archivo, 
-                                                imagen = :imagen
+                                                estado = :estado
                                             WHERE id = :id';
 
         $stmt = $this->conn->prepare($query);
 
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $this->idAsignatura = htmlspecialchars(strip_tags($this->idAsignatura));
         $this->dni = htmlspecialchars(strip_tags($this->dni));
-        $this->titulo = htmlspecialchars(strip_tags($this->titulo));
-        $this->fecha = htmlspecialchars(strip_tags($this->fecha));
-        $this->texto = htmlspecialchars(StringUtils::strip_html_script($this->texto));
-        $this->archivo = htmlspecialchars(strip_tags($this->archivo));
-        $this->imagen = htmlspecialchars(strip_tags($this->imagen));
+        $this->estado = htmlspecialchars(strip_tags($this->estado));
 
 
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':idAsignatura', $this->idAsignatura);
         $stmt->bindParam(':dni', $this->dni);
-        $stmt->bindParam(':titulo', $this->titulo);
-        $stmt->bindParam(':fecha', $this->fecha);
-        $stmt->bindParam(':texto', $this->texto);
-        $stmt->bindParam(':archivo', $this->archivo);
-        $stmt->bindParam(':imagen', $this->imagen);
+        $stmt->bindParam(':estado', $this->estado);
 
         if ($stmt->execute()) {
             return true;
@@ -175,6 +164,30 @@ class Matriculas
         }
 
         printf("ERROR: %s.\n", $stmt->error);
+
+        return false;
+    }
+
+    public function exists()
+    {
+        $query = "SELECT id 
+                                FROM " . strtolower(__CLASS__) . "
+                                WHERE
+                                      nombre = :nombre
+                                      AND
+                                      idAsignatura = :idAsignatura
+                                      LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':nombre', $this->nombre);
+        $stmt->bindParam(':idAsignatura', $this->idAsignatura);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
 
         return false;
     }

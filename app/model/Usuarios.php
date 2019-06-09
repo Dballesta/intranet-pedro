@@ -51,28 +51,6 @@ class Usuarios
         $this->privilegios = $row['privilegios'];
     }
 
-    public function exists()
-    {
-        $query = "SELECT nombre 
-                                FROM " . strtolower(__CLASS__) . "
-                                WHERE
-                                      dni = :dni
-                                      LIMIT 0,1";
-
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':dni', $this->dni, PDO::PARAM_INT);
-
-        $stmt->execute();
-
-        if ($stmt->rowCount() > 0) {
-            return true;
-        }
-
-        return false;
-
-    }
-
     function login()
     {
         $query = 'SELECT dni, nombre, apellidos, privilegios
@@ -169,4 +147,26 @@ class Usuarios
 
         return false;
     }
+
+    public function exists()
+    {
+        $query = "SELECT nombre 
+                                FROM " . strtolower(__CLASS__) . "
+                                WHERE
+                                      dni = :dni
+                                      LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':dni', $this->dni);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

@@ -14,10 +14,10 @@ $db = $database->getConnection();
 $curso = new Cursos($db);
 
 // Obtención del id por get
-$curso->nombre = isset($_GET['nombre']) ? $_GET['nombre'] : die();
+$curso->id = isset($_GET['id']) ? $_GET['id'] : die();
 
 // Obtención del curso
-$curso->insert();
+$curso->findOne();
 
 // Creación del array
 $cursos = array(

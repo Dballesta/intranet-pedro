@@ -153,6 +153,7 @@ class News
         $this->imagen = htmlspecialchars(strip_tags($this->imagen));
 
 
+        $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':dni', $this->dni);
         $stmt->bindParam(':titulo', $this->titulo);
         $stmt->bindParam(':fecha', $this->fecha);

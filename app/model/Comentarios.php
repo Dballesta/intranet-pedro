@@ -74,7 +74,6 @@ class Comentarios
         $this->dni = htmlspecialchars(strip_tags($this->dni));
         $this->texto = htmlspecialchars(StringUtils::strip_html_script($this->texto));
 
-        $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':fecha', $this->fecha);
         $stmt->bindParam(':idTema', $this->idTema);
         $stmt->bindParam(':dni', $this->dni);
@@ -93,7 +92,6 @@ class Comentarios
     {
         $query = 'UPDATE ' . strtolower(__CLASS__) . '
                                             SET 
-                                                id = :id, 
                                                 fecha = :fecha, 
                                                 idTema = :idTema, 
                                                 dni = :dni, 

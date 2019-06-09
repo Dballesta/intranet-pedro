@@ -149,4 +149,25 @@ class Cursos
 
         return false;
     }
+
+    public function exists()
+    {
+        $query = "SELECT id 
+                                FROM " . strtolower(__CLASS__) . "
+                                WHERE
+                                      nombre = :nombre
+                                      LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':nombre', $this->nombre);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+
+        return false;
+    }
 }

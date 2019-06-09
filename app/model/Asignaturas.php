@@ -159,4 +159,28 @@ class Asignaturas
 
         return false;
     }
+
+    public function exists()
+    {
+        $query = "SELECT id 
+                                FROM " . strtolower(__CLASS__) . "
+                                WHERE
+                                    idCurso = :idCurso
+                                    AND 
+                                    nombre = :nombre
+                                    LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':idCurso', $this->idCurso);
+        $stmt->bindParam(':nombre', $this->nombre);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+
+        return false;
+    }
 }

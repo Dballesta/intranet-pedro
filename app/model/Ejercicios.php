@@ -184,4 +184,28 @@ class Ejercicios
 
         return false;
     }
+
+    public function exists()
+    {
+        $query = "SELECT id 
+                                FROM " . strtolower(__CLASS__) . "
+                                WHERE
+                                      idTema = :idTema
+                                      AND
+                                      titulo = :titulo
+                                      LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':idTema', $this->idTema);
+        $stmt->bindParam(':titulo', $this->titulo);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+
+        return false;
+    }
 }
