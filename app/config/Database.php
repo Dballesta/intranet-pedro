@@ -6,6 +6,10 @@ class Database{
     public $conn;
 
     // Método para la conexión a la base de datos.
+
+    /**
+     * @return PDO|null
+     */
     public function getConnection(){
 
         $this->conn = null;

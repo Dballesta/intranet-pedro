@@ -14,9 +14,8 @@ $db = $database->getConnection();
 $curso = new Cursos($db);
 
 // Obtención del id por get
-$curso->id = isset($_GET['id']) ? $_GET['id'] : die();
+$curso->nombre = isset($_GET['nombre']) ? $_GET['nombre'] : die();
 
-if
 // Obtención del curso
 $curso->findOne();
 

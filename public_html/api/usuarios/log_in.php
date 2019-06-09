@@ -34,8 +34,8 @@ if($stmt->rowCount() > 0){
     $usuario->privilegios = $row['privilegios'];
 
     $jwt = Jwt::generateJWT($usuario);
-    setcookie("JWT", $jwt, time()+31536000);
     http_response_code(200);
+    setcookie("JWT", $jwt, time()+31536000);
     echo json_encode(array("message" => "Acceso permitido"));
 
 }else{
