@@ -26,7 +26,7 @@ if ($num > 0) {
             "nombre" => $row['nombre']
         );
     }
-    
+
     echo json_encode($cursos_arr["cursos"]);
 } else {
     echo json_encode(array());

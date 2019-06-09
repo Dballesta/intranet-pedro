@@ -10,3 +10,5 @@ define("PASSWORD","");
 define("JWTPASSWORD","intranet-pedro");
 define("ALGORITHM","sha256");
 define("TOKENTIME",60000);
+
+define("URLHOST", localhost);
