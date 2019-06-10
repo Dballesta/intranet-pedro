@@ -21,7 +21,7 @@ $db = $database->getConnection();
 $usuario = new Usuarios($db);
 
 $usuario->dni = isset($_POST['dni']) ? $_POST['dni'] : die();
-
+echo $_POST['dni'];
 $usuario->password = base64_encode(isset($_POST['password']) ? $_POST['password'] : die());
 
 $stmt = $usuario->login();
@@ -35,13 +35,19 @@ if($stmt->rowCount() > 0){
 
     $jwt = Jwt::generateJWT($usuario);
     http_response_code(200);
-    setcookie("JWT", $jwt, time()+31536000);
-    echo json_encode(array("message" => "Acceso permitido"));
+    // Creación del array de respuesta
+    $response = array(
+        'jwt' => $jwt,
+        'message' => "Acceso permitido"
+    );
 
 }else{
     //https://developer.mozilla.org/es/docs/Web/HTTP/Status/401
     http_response_code(401);
 
-    //Mensaje de error de login
-    echo json_encode(array("message" => "Acceso denegado"));
+    // Creación del array de respuesta
+    $response = array(
+        'message' => "Acceso denegado"
+    );
 }
+echo json_encode($response);

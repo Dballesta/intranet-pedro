@@ -5,12 +5,12 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 
 include_once '../../../app/config/settings.php';
+include_once '../../../app/util/Jwt.php';
 
 $response = array();
 $upload_dir = '../../../uploads/images';
-$server_url = URLHOST;
 
-if (Jwt::verifyJWTAdmin($_COOKIE("JWT"))) {
+if (isset($_COOKIE["JWT"]) && Jwt::verifyJWTAdmin($_COOKIE("JWT"))) {
     if ($_FILES['image']) {
         $image_name = $_FILES["image"]["name"];
         $image_tmp_name = $_FILES["image"]["tmp_name"];
@@ -32,7 +32,7 @@ if (Jwt::verifyJWTAdmin($_COOKIE("JWT"))) {
 
                 $response = array(
                     "message" => "File uploaded successfully",
-                    "url" => $server_url . "/" . $upload_name
+                    "url" => URLHOST . "/" . $upload_name
                 );
             } else {
                 http_response_code(500);
